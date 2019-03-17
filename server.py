@@ -13,5 +13,11 @@ def index():
 def static_dist(path):
     return send_from_directory("static/dist", path)
 
+@app.route('/api/properties')
+def properties():
+    return jsonify({
+        'version': '0.0.1',
+        })
+
 if __name__ == '__main__':
     app.run()
