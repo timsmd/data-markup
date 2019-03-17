@@ -13,6 +13,5 @@ def index():
 def static_dist(path):
     return send_from_directory("static/dist", path)
 
-
 if __name__ == '__main__':
     app.run()
