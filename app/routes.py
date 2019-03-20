@@ -1,7 +1,5 @@
-from flask import Flask, jsonify, send_from_directory
-
-app = Flask(__name__, static_folder='static/dist')
-
+from flask import jsonify, send_from_directory
+from app import app
 
 @app.route('/')
 # single page app handled by Vue.js
@@ -16,7 +14,7 @@ def static_dist(path):
 @app.route('/api/properties')
 def properties():
     return jsonify({
-        'version': '0.0.1',
+            'version': '0.0.1'
         })
 
 if __name__ == '__main__':
