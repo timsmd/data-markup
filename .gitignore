@@ -12,3 +12,5 @@ static/yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
+
+app\.db
