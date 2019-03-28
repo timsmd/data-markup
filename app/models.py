@@ -22,6 +22,9 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     insta_username = db.Column(db.String(120), index=True, unique=True)
 
+    def get_url():
+        return 'https://instagram.com/{}'.format(self.insta_username)
+
     def __repr__(self):
         return '<Profile {} (id: {})>'.format(self.insta_username, self.id)
 
