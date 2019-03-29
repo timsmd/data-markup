@@ -46,29 +46,25 @@ def login():
 		'info': 'login url'
 	}))
 
-@app.route('/api/logout', methods=['POST', 'GET'])
+@app.route('/api/logout')
 def logout():
-	if request.method == 'POST':
-		try:
-			logout_user()
-		except:
-			return jsonify({
-				'logged_out': False
-			})
-		else:
-			return jsonify({
-				'logged_out': True
-			})
-	return(jsonify({
-		'info': 'logout url'
-	}))
+	try:
+		logout_user()
+	except:
+		return jsonify({
+			'logged_out': False
+		})
+	else:
+		return jsonify({
+			'logged_out': True
+		})
 
 @app.route('/api/signup', methods=['POST', 'GET'])
 def sign_up():
 	if request.method == 'POST':
 		post_data = request.get_json()
 		if User.query.filter_by(username=post_data['username']).first() is not None:
-			return (jsonify{
+			return jsonify({
 				'info': 'username taken',
 				'signed_up': False
 			})
