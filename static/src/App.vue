@@ -46,28 +46,32 @@
 				})
 			},
 			login: function () {
-				axios.post('/api/login', {
-					username: this.username,
-					password: this.password
-				})
-				.then(response => {
-					this.msg = response.data.username + ' logged in'
-				})
-				.catch(e => {
-					this.errors.push(e)
-				})
+				if (this.username != '' && this.password != '') {
+					axios.post('/api/login', {
+						username: this.username,
+						password: this.password
+					})
+					.then(response => {
+						this.msg = response.data.username + ' logged in'
+					})
+					.catch(e => {
+						this.errors.push(e)
+					})
+				}
 			},
 			signup: function () {
-				axios.post('/api/signup', {
-					username: this.username,
-					password: this.password
-				})
-				.then(response => {
-					this.msg = response.data.username + ' signed up'
-				})
-				.catch(e => {
-					this.errors.push(e)
-				})
+				if (this.username != '' && this.password != '') {
+					axios.post('/api/signup', {
+						username: this.username,
+						password: this.password
+					})
+					.then(response => {
+						this.msg = response.data.username + ' signed up'
+					})
+					.catch(e => {
+						this.errors.push(e)
+					})
+				}
 			}
 		}
 	}
