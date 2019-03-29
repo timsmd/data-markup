@@ -7,6 +7,7 @@
 <!-- 		<input v-model="username" placeholder="username">
 		<input v-model="password" placeholder="password"> -->
 		<button v-on:click="login">Login</button>
+		<button v-on:click="logout">Logout</button>
 		<p>sign up form</p>
 		<input v-model="username" placeholder="username">
 		<input v-model="password" placeholder="password">
@@ -72,6 +73,15 @@
 						this.errors.push(e)
 					})
 				}
+			},
+			logout: function() {
+				axios.get('/api/logout')
+				.then(response => {
+					this.msg = response.data.logged_out
+				})
+				.catch(e => {
+					this.errors.push(e)
+				})
 			}
 		}
 	}
