@@ -42,19 +42,26 @@ def login():
 			'logged_in': True,
 			'username': post_data['username']
 		})
+	return(jsonify({
+		'info': 'login url'
+	}))
 
 @app.route('/api/logout', methods=['POST', 'GET'])
 def logout():
-	try:
-		logout_user()
-	except:
-		return jsonify({
-			'logged_out': False
-		})
-	else:
-		return jsonify({
-			'logged_out': True
-		})
+	if request.method == 'POST':
+		try:
+			logout_user()
+		except:
+			return jsonify({
+				'logged_out': False
+			})
+		else:
+			return jsonify({
+				'logged_out': True
+			})
+	return(jsonify({
+		'info': 'logout url'
+	}))
 
 @app.route('/api/signup', methods=['POST', 'GET'])
 def sign_up():
@@ -68,6 +75,9 @@ def sign_up():
 			'username': new_user.username,
 			'signed_up': True
 		}))
+	return(jsonify({
+		'info': 'sign up url'
+	}))
 
 if __name__ == '__main__':
 	app.run()
