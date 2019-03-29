@@ -67,6 +67,11 @@ def logout():
 def sign_up():
 	if request.method == 'POST':
 		post_data = request.get_json()
+		if User.query.filter_by(username=post_data['username']).first() is not None:
+			return (jsonify{
+				'info': 'username taken',
+				'signed_up': False
+			})
 		new_user = User(username=post_data['username'])
 		new_user.set_password(post_data['password'])
 		db.session.add(new_user)
