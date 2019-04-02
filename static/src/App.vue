@@ -23,29 +23,13 @@
 		data() {
 			return {
 				msg: '',
-				postInput: '',
 				username: '',
 				password: '',
 				errors: []
 			}
 		},
-		created() {
-			axios.get("/api/properties").then(r =>{
-				this.msg = r.data
-			})
 		},
 		methods: {
-			postButton : function () {
-				axios.post('/api', {
-					data: this.postInput
-				})
-				.then(response => {
-					this.msg = response.data.data
-				})
-				.catch(e => {
-					this.errors.push(e)
-				})
-			},
 			login: function () {
 				if (this.username != '' && this.password != '') {
 					axios.post('/api/login', {

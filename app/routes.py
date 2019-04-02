@@ -5,26 +5,6 @@ from app.models import User
 
 inputForm = 'server'
 
-@app.route('/api/properties')
-def properties():
-	return jsonify({
-			'version': '0.0.1',
-			'inputForm': inputForm
-		})
-
-@app.route('/api', methods=['POST', 'GET'])
-def postApi():
-	if request.method == 'POST':
-		post_data = request.get_json()
-		inputForm = post_data['data']
-		return jsonify({
-				'recieved': 'OK',
-				'data': post_data['data']
-			})
-	return jsonify({
-		'recieved': 'NO'
-	})
-
 @app.route('/api/login', methods=['POST', 'GET'])
 def login():
 	if request.method == 'POST':
