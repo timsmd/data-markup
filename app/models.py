@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
 class Batch(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(64), index=True, unique=True)
+    # status codes: 0 - test, 1 - active, 2 - inactive
     status = db.Column(db.Integer)
 
 class Profile(db.Model):
@@ -55,7 +56,7 @@ class Vote(db.Model):
     session = db.Column(db.String(200))
 
     def __repr__(self):
-        return '<User {} voted for profile {} to be {}>'.format(self.user_id, self.profile_id, self.class_id)
+        return '<User {} voted for profile {} in {} to be {}>'.format(self.user_id, self.profile_id, self.class_id, self.value)
 
 
 @login.user_loader
