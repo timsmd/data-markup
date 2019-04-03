@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
 class Batch(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(64), index=True, unique=True)
+    # status codes: 0 - test, 1 - active, 2 - inactive
     status = db.Column(db.Integer)
 
 class Profile(db.Model):
