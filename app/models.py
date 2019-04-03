@@ -56,7 +56,7 @@ class Vote(db.Model):
     session = db.Column(db.String(200))
 
     def __repr__(self):
-        return '<User {} voted for profile {} to be {}>'.format(self.user_id, self.profile_id, self.class_id)
+        return '<User {} voted for profile {} in {} to be {}>'.format(self.user_id, self.profile_id, self.class_id, self.value)
 
 
 @login.user_loader

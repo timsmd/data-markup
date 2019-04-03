@@ -3,8 +3,6 @@ from flask_login import current_user, login_user, logout_user
 from app import app, db
 from app.models import User
 
-inputForm = 'server'
-
 @app.route('/api/login', methods=['POST', 'GET'])
 def login():
 	if request.method == 'POST':
@@ -59,3 +57,5 @@ def sign_up():
 	return(jsonify({
 		'info': 'sign up url'
 	}))
+
+	
