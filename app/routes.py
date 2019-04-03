@@ -59,6 +59,3 @@ def sign_up():
 	return(jsonify({
 		'info': 'sign up url'
 	}))
-
-if __name__ == '__main__':
-	app.run()
