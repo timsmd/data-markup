@@ -35,7 +35,9 @@
 						password: this.password
 					})
 					.then(response => {
-						this.msg = response.data.username + ' logged in'
+						if (response.data.logged_in) {
+							this.msg = response.data.username + ' logged in'
+						}
 					})
 					.catch(e => {
 						this.errors.push(e)
