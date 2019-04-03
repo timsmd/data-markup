@@ -14,3 +14,5 @@ static/yarn-error.log
 *.sln
 
 app\.db
+
+data/
