@@ -49,7 +49,7 @@ class Profileclass(db.Model):
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
     class_id = db.Column(db.Integer, db.ForeignKey('profileclass.id'))
     value = db.Column(db.Integer)
