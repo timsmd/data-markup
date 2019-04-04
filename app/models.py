@@ -44,7 +44,7 @@ class Profileclass(db.Model):
     if_false = db.Column(db.String(64))
 
     def __repr__(self):
-        return '<Class {}: {} /n(id: {})>'.format(self.name, self.description, self.id)
+        return '<Class {}: {} /n(id: {})>'.format(self.class_name, self.description, self.id)
 
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
