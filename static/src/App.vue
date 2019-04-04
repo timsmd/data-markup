@@ -8,12 +8,19 @@
 		<button v-on:click="logout">Logout</button>
 		<p>sign up form</p>
 		<button v-on:click="signup">Sign up</button>
+		<p>voting classes</p>
+		<div v-for="item in this.profile_classes">
+			<input type="radio" v-bind:id="item.id" value="Один" v-bind:name="item.id+'_'">
+			<label for="one">{{ item.if_true }}</label>
+			<input type="radio" v-bind:id="item.id" value="Два" v-bind:name="item.id+'_'">
+			<label for="two">{{ item.if_false }}</label>
+			<br>
+		</div>
 	</div>
 </template>
 
 <script>
  	import axios from 'axios';
-
  	export default {
 		name: 'app',
 		data() {
@@ -21,11 +28,20 @@
 				msg: '',
 				username: '',
 				password: '',
-				profile: {},
-				classes: [],
+				profiles: [],
+				profile_classes: [],
 				errors: []
 			}
 		},
+		created: function () {
+				axios.get('/api/classes')
+				.then(response => {
+					this.profile_classes = response.data.classes
+				})
+				.catch(e => {
+					this.errors.push(e)
+				})
+			},
 		// get classes from db on created page
 		methods: {
 			login: function () {
@@ -53,8 +69,8 @@
 					.then(response => {
 						this.msg = response.data.username + ' signed up'
 					})
-					.catch(e => {
-						this.errors.push(e)
+					.catch(error => {
+						this.errors.push(error)
 					})
 				}
 			},
