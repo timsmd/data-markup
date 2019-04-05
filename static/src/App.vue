@@ -8,7 +8,6 @@
 		<button v-on:click="logout">Logout</button>
 		<p>sign up form</p>
 		<button v-on:click="signup">Sign up</button>
-		<button v-on:click="get_profile">get profiles</button>
 		<p>voting classes</p>
 		<div v-for="item in this.profile_classes">
 			<input type="radio" v-bind:id="item.id" value="Один" v-bind:name="item.id+'_'">
@@ -17,6 +16,8 @@
 			<label for="two">{{ item.if_false }}</label>
 			<br>
 		</div>
+		<button v-on:click="get_profile">get profiles</button>
+		<button v-on:click="vote">test_vote</button>
 	</div>
 </template>
 
@@ -32,8 +33,17 @@
 				profiles: [],
 				profile_classes: [],
 				errors: [],
-				current_profile: 1,
-				votes: []
+				current_profile: 4,
+				votes: [
+					{
+						class: 1,
+						value: 0
+					},
+					{
+						class: 2,
+						value: 0
+					}
+				]
 			}
 		},
 		created: function () {
