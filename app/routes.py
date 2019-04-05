@@ -1,19 +1,8 @@
 from flask import jsonify, send_from_directory, request
 from flask_login import current_user, login_user, logout_user
 from app import app, db
-from app.models import User, Profile, Profileclass, Vote
+from app.models import User, Profile, Profileclass, Vote, Batch
 from datetime import datetime
-
-votes = [
-	{
-		'class': 1,
-		'value': 1
-	},
-	{
-		'class': 2,
-		'value': 1
-	}
-]
 
 @app.route('/api/vote', methods=['POST', 'GET'])
 def cast_vote():
