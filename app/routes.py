@@ -12,16 +12,25 @@ def cast_vote():
 			post_data = request.get_json()
 			profile = post_data['profile']
 			votes = post_data['votes']
+			votes_info = []
 			for each in votes:
 				voted_class = each['class']
 				voted_value = each['value']
 				new_vote = Vote(user_id=current_user.id, profile_id=profile, class_id=voted_class, value=voted_value, session=session['_id'])
 				db.session.add(new_vote)
-			db.session.commit()
-			return (jsonify({
-				'voted': True,
-				'info': new_vote.__repr__()
-			}))
+				votes_info.append(new_vote)
+			try:
+				db.session.commit()
+			except:
+				return (jsonify({
+					'voted': False,
+					'info': ';'.join(vote.__repr__() for vote in votes_info)
+				}))
+			else:
+				return (jsonify({
+					'voted': True,
+					'info': ';'.join(vote.__repr__() for vote in votes_info)
+				}))
 
 @app.route('/api/profile')
 def get_profiles():
