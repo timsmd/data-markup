@@ -41,22 +41,20 @@ def cast_vote():
 @app.route('/api/profile')
 def get_profiles():
 	# TODO add status selection
-	response = {}
+
+	all_profiles = Profile.query.\
+	join(Batch).filter_by(status=0)
+	voted_already = []
+
 	if current_user.is_authenticated:
-
-		all_profiles = Profile.query.\
-		join(Batch).filter_by(status=0)
-
 		voted_already = all_profiles.\
 		join(Vote).filter(Vote.user_id == current_user.id).all()
+	else:
+		voted_already = all_profiles.\
+		join(Vote).filter(Vote.session == session['_id']).all()
 
-		response = [profile.get_dict() for profile in all_profiles.all() if profile not in voted_already]
-
-		return(jsonify(response))
-
-	return(jsonify({
-		'msg': 'login required',
-	}))
+	response = [profile.get_dict() for profile in all_profiles.all() if profile not in voted_already]
+	return(jsonify(response))
 	
 @app.route('/api/classes')
 def get_classes():
