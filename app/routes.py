@@ -7,30 +7,36 @@ from datetime import datetime
 @app.route('/api/vote', methods=['POST', 'GET'])
 def cast_vote():
 	if request.method == 'POST':
+		
+		user_id = None
+		session_id = session['_id']
+
 		if current_user.is_authenticated:
-			# session required?
-			post_data = request.get_json()
-			profile = post_data['profile']
-			votes = post_data['votes']
-			votes_info = []
-			for each in votes:
-				voted_class = each['class']
-				voted_value = each['value']
-				new_vote = Vote(user_id=current_user.id, profile_id=profile, class_id=voted_class, value=voted_value, session=session['_id'])
-				db.session.add(new_vote)
-				votes_info.append(new_vote)
-			try:
-				db.session.commit()
-			except:
-				return (jsonify({
-					'voted': False,
-					'info': ';'.join(vote.__repr__() for vote in votes_info)
-				}))
-			else:
-				return (jsonify({
-					'voted': True,
-					'info': ';'.join(vote.__repr__() for vote in votes_info)
-				}))
+			user_id = current_user.id
+			session_id = None
+
+		post_data = request.get_json()
+		profile = post_data['profile']
+		votes = post_data['votes']
+		votes_info = []
+		for each in votes:
+			voted_class = each['class']
+			voted_value = each['value']
+			new_vote = Vote(user_id=user_id, profile_id=profile, class_id=voted_class, value=voted_value, session=session_id)
+			db.session.add(new_vote)
+			votes_info.append(new_vote)
+		try:
+			db.session.commit()
+		except:
+			return (jsonify({
+				'voted': False,
+				'info': ';'.join(vote.__repr__() for vote in votes_info)
+			}))
+		else:
+			return (jsonify({
+				'voted': True,
+				'info': ';'.join(vote.__repr__() for vote in votes_info)
+			}))
 
 @app.route('/api/profile')
 def get_profiles():
