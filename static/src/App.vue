@@ -8,6 +8,7 @@
 		<button v-on:click="logout">Logout</button>
 		<p>sign up form</p>
 		<button v-on:click="signup">Sign up</button>
+		<button v-on:click="get_profile">get profiles</button>
 		<p>voting classes</p>
 		<div v-for="item in this.profile_classes">
 			<input type="radio" v-bind:id="item.id" value="Один" v-bind:name="item.id+'_'">
@@ -30,7 +31,9 @@
 				password: '',
 				profiles: [],
 				profile_classes: [],
-				errors: []
+				errors: [],
+				current_profile: 1,
+				votes: []
 			}
 		},
 		created: function () {
@@ -84,10 +87,22 @@
 				})
 			},
 			vote: function () {
-
+				axios.post('/api/vote',{
+					profile: this.current_profile,
+					votes: this.votes
+				})
+				.then(response => {
+					//
+				})
 			},
 			get_profile: function () {
-
+				axios.get('/api/profile')
+				.then(response => {
+					this.profile_classes = response.data.classes
+				})
+				.catch(e => {
+					this.errors.push(e)
+				})
 			}
 		}
 	}
