@@ -71,6 +71,10 @@ class Vote(db.Model):
     class_id = db.Column(db.Integer, db.ForeignKey('profileclass.id'))
     value = db.Column(db.Integer)
     session = db.Column(db.String(200))
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'profile_id', 'class_id', name='user_class_profile_uc'),
+        db.UniqueConstraint('session', 'profile_id', 'class_id', name='session_class_profile_uc')
+        )
 
     def __repr__(self):
         return '<User {} voted for profile {} in {} to be {}>'.format(self.user_id, self.profile_id, self.class_id, self.value)
