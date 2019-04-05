@@ -28,7 +28,6 @@ def get_profiles():
 	return(jsonify(response))
 	
 @app.route('/api/classes')
-# TODO refactor, looks bad
 def get_classes():
 	classes = Profileclass.query.all()
 	response = {
