@@ -35,6 +35,7 @@ class Profile(db.Model):
 
     def get_dict(self):
         return({
+            'id': self.id,
             'insta_username': self.insta_username,
             'batch_id': self.batch_id,
             'labelled': self.labelled,
