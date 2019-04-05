@@ -17,6 +17,16 @@ def cast_vote():
 				voted_value = each['value']
 				new_vote = Vote(user_id=current_user.id, profile_id=profile, class_id=voted_class, value=voted_value)
 
+@app.route('/api/profile')
+def get_profiles():
+	profiles = Profile.query.\
+	join(Batch).filter_by(status=0).\
+	join(Vote).filter(Vote.user_id != 2).all()
+
+	response = [pr.get_dict() for pr in profiles]
+
+	return(jsonify(response))
+	
 @app.route('/api/classes')
 # TODO refactor, looks bad
 def get_classes():

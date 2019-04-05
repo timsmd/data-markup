@@ -30,8 +30,16 @@ class Profile(db.Model):
     batch_id = db.Column(db.Integer, db.ForeignKey('batch.id'))
     labelled = db.Column(db.Boolean, default=False)
 
-    def get_url():
+    def get_url(self):
         return 'https://instagram.com/{}'.format(self.insta_username)
+
+    def get_dict(self):
+        return({
+            'insta_username': self.insta_username,
+            'batch_id': self.batch_id,
+            'labelled': self.labelled,
+            'url': self.get_url()
+        })
 
     def __repr__(self):
         return '<Profile {} (id: {})>'.format(self.insta_username, self.id)
