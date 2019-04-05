@@ -1,4 +1,4 @@
-from flask import jsonify, send_from_directory, request
+from flask import jsonify, send_from_directory, request, session
 from flask_login import current_user, login_user, logout_user
 from app import app, db
 from app.models import User, Profile, Profileclass, Vote, Batch
@@ -10,22 +10,38 @@ def cast_vote():
 		if current_user.is_authenticated:
 			# session required?
 			post_data = request.get_json()
-			profile = post_data['current_profile']
-			votes = post_data['current_votes']
+			profile = post_data['profile']
+			votes = post_data['votes']
 			for each in votes:
 				voted_class = each['class']
 				voted_value = each['value']
-				new_vote = Vote(user_id=current_user.id, profile_id=profile, class_id=voted_class, value=voted_value)
+				new_vote = Vote(user_id=current_user.id, profile_id=profile, class_id=voted_class, value=voted_value, session=session['_id'])
+				db.session.add(new_vote)
+			db.session.commit()
+			return (jsonify({
+				'voted': True,
+				'info': new_vote.__repr__()
+			}))
 
 @app.route('/api/profile')
 def get_profiles():
-	profiles = Profile.query.\
-	join(Batch).filter_by(status=0).\
-	join(Vote).filter(Vote.user_id != 2).all()
+	# TODO add status selection
+	response = {}
+	if current_user.is_authenticated:
 
-	response = [pr.get_dict() for pr in profiles]
+		all_profiles = Profile.query.\
+		join(Batch).filter_by(status=0)
 
-	return(jsonify(response))
+		voted_already = all_profiles.\
+		join(Vote).filter(Vote.user_id == current_user.id).all()
+
+		response = [profile.get_dict() for profile in all_profiles.all() if profile not in voted_already]
+
+		return(jsonify(response))
+
+	return(jsonify({
+		'msg': 'login required',
+	}))
 	
 @app.route('/api/classes')
 def get_classes():
