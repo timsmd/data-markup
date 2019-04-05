@@ -25,12 +25,7 @@ def get_classes():
 		'classes': []
 	}
 	for each in classes:
-		current_class = {}
-		current_class['id'] = each.id
-		current_class['name'] = each.class_name
-		current_class['if_true'] = each.if_true
-		current_class['if_false'] = each.if_false
-		response['classes'].append(current_class)
+		response['classes'].append(each.get_dict())
 	
 	return(jsonify(response))
 

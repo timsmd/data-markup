@@ -43,6 +43,14 @@ class Profileclass(db.Model):
     if_true = db.Column(db.String(64))
     if_false = db.Column(db.String(64))
 
+    def get_dict(self):
+        return({
+            'id': self.id,
+            'name': self.class_name,
+            'if_true': self.if_true,
+            'if_false': self.if_false
+        })
+
     def __repr__(self):
         return '<Class {}: {} /n(id: {})>'.format(self.class_name, self.description, self.id)
 
