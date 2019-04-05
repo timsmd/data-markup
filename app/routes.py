@@ -69,14 +69,22 @@ def login():
 		if current_user.is_authenticated:
 			return jsonify({
 				'logged_in': False,
-				'username': post_data['username']
+				'username': current_user.username,
+				'info': 'already logged in'
 			})
 		post_data = request.get_json()
 		user = User.query.filter_by(username=post_data['username']).first()
-		if (user is None) or (not user.check_password(post_data['password'])):
+		if user is None:
 			return jsonify({
 				'logged_in': False,
-				'username': post_data['username']
+				'username': post_data['username'],
+				'info': 'username not found'
+			})
+		if not user.check_password(post_data['password']):
+			return jsonify({
+				'logged_in': False,
+				'username': post_data['username'],
+				'info': 'wrong password'
 			})
 		login_user(user)
 		return jsonify({
