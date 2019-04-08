@@ -38,6 +38,17 @@ def cast_vote():
 				'info': ';'.join(vote.__repr__() for vote in votes_info)
 			}))
 
+@app.route('/api/check/login')
+def check_login():
+	if current_user.is_authenticated:
+		return(jsonify({
+			'username': current_user.username,
+			'logged_in': True
+		}))
+	return(jsonify({
+		'logged_in': False
+	}))
+
 @app.route('/api/profile')
 def get_profiles():
 	# TODO add status selection
