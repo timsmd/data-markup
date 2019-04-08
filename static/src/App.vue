@@ -1,6 +1,12 @@
 <template>
 	<div id='app'>
-			<vote-class id='vote-class'></vote-class>
+		<div id='nav-bar'>
+			<!-- -->
+		</div>
+		<div id='main-body'>
+			<vote-class id='vote-class'></vote-class>		
+			<!-- -->
+		</div>
 	</div>
 </template>
 
@@ -35,7 +41,7 @@
 			axios.get('/api/check/login')
 			.then(response => {
 				this.logged_in = response.data.logged_in;
-				this.current_user = response.data.username || null;
+				this.current_user = response.data.username || '';
 			})
 		},
 		methods: {
@@ -79,15 +85,6 @@
 				})
 				.catch(e => {
 					this.errors.push(e)
-				})
-			},
-			vote: function () {
-				axios.post('/api/vote',{
-					profile: this.current_profile,
-					votes: this.votes
-				})
-				.then(response => {
-					//
 				})
 			},
 		}

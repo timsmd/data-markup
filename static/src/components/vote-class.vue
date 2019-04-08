@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<iframe src="https://web.stagram.com/tim_smd" width="480" height="480"></iframe>
+		<iframe src="https://web.stagram.com/tim_smd" width="720" height="640"></iframe>
 		<div v-for="item in classes">
 			<input type="radio" v-bind:id="item.id" value="Один" v-bind:name="item.id+'_'">
 			<label for="one">{{ item.if_true }}</label>
@@ -39,8 +39,16 @@
 				.catch(e => {
 					this.errors.push(e)
 				})
-			}
-
+			},
+			vote: function () {
+				axios.post('/api/vote',{
+					profile: this.current_profile,
+					votes: this.votes
+				})
+				.then(response => {
+					//
+				})
+			},
 		}
 	}
 </script>
