@@ -1,6 +1,6 @@
 {
   "name": "data-markup",
-  "description": "A Vue.js project",
+  "description": "A Vue.js + Flask instagram profiles labeling project",
   "version": "1.0.0",
   "author": "Timofey Nazarov <timothy96@rambler.ru>",
   "license": "no",
