@@ -1,13 +1,23 @@
 <template>
 	<div>
-		<iframe src="https://web.stagram.com/tim_smd" width="720" height="640"></iframe>
-		<div v-for="item in classes">
-			<input type="radio" v-bind:id="item.id" value="Один" v-bind:name="item.id+'_'">
-			<label for="one">{{ item.if_true }}</label>
-			<input type="radio" v-bind:id="item.id" value="Два" v-bind:name="item.id+'_'">
-			<label for="two">{{ item.if_false }}</label>
-			<br>
+		<div class="container my-3">
+			<div class="embed-responsive embed-responsive-1by1 mx-auto">
+				<iframe class="embed-responsive-item mw-50" src="https://www.yooying.com/tim_smd"></iframe>
+			</div>
 		</div>
+			<div class="container mx-auto" v-for="item in classes">
+				<div class="btn-group btn-group-toggle col-md-12 my-1 mx-auto" data-toggle="buttons">
+					<label class="btn btn-primary col-md-4">
+						<input type="radio" v-bind:name="'group_'+item.id" v-bind:id="'group_'+item.id+'_1'" autocomplete="off" value=1>{{ item.if_true }}
+					</label>
+					<label class="btn btn-info col-md-4">
+						<input type="radio" v-bind:name="'group_'+item.id" v-bind:id="'group_'+item.id+'_2'" autocomplete="off" value=0>{{ item.if_false }}
+					</label>
+					<label class="btn btn-dark col-md-4">
+						<input type="radio" v-bind:name="'group_'+item.id" v-bind:id="'group_'+item.id+'_3'" autocomplete="off" value=-1>Not sure
+					</label>
+				</div>
+			</div>
 	</div>
 </template>
 <script>
@@ -20,17 +30,20 @@
 			}
 		},
 		created: function () {
-			axios.get('/api/classes')
-			.then(response => {
-				this.classes = response.data.classes
-			})
-			.catch(e => {
-				this.errors.push(e)
-			})
+			this.get_classes()
 		},
 		props: {
 		},
 		methods: {
+			get_classes: function () {
+				axios.get('/api/classes')
+				.then(response => {
+					this.classes = response.data.classes
+				})
+				.catch(e => {
+					this.errors.push(e)
+				})
+			},
 			get_profile: function () {
 				axios.get('/api/profile')
 				.then(response => {

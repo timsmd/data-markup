@@ -1,11 +1,12 @@
 <template>
 	<div id='app'>
-		<div id='nav-bar'>
-			<!-- -->
+		<div id='nav-bar' class='bg-dark text-light'>
+			<nav-bar></nav-bar>
 		</div>
-		<div id='main-body'>
-			<vote-class id='vote-class'></vote-class>		
-			<!-- -->
+		<div id='main-body' class='bg-light text-dark'>
+			<button @click='change'>change</button>
+			<vote-class v-if='modifiers.show_vote' id='vote-class'></vote-class>		
+			<hello-screen v-if='modifiers.show_hello' id='hello-screen'></hello-screen>
 		</div>
 	</div>
 </template>
@@ -17,6 +18,10 @@
 		data: function () {
 			return {
 				msg: '',
+				modifiers: {
+					show_vote: false,
+					show_hello: true,
+				},
 				current_user: '',
 				logged_in: '',
 				username: '',
@@ -25,16 +30,6 @@
 				profile_classes: [],
 				errors: [],
 				current_profile: 4,
-				votes: [
-					{
-						class: 1,
-						value: 0
-					},
-					{
-						class: 2,
-						value: 0
-					}
-				]
 			}
 		},
 		created: function () {
@@ -45,6 +40,10 @@
 			})
 		},
 		methods: {
+			change: function () {
+				this.modifiers.show_vote = !this.modifiers.show_vote;
+				this.modifiers.show_hello = !this.modifiers.show_hello;
+			},
 			login: function () {
 				if (this.username != '' && this.password != '') {
 					axios.post('/api/login', {
