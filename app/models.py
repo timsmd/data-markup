@@ -33,13 +33,17 @@ class Profile(db.Model):
     def get_url(self):
         return 'https://instagram.com/{}'.format(self.insta_username)
 
+    def get_iframe_url(self):
+        return 'https://www.yooying.com/{}'.format(self.insta_username)
+
     def get_dict(self):
         return({
             'id': self.id,
             'insta_username': self.insta_username,
             'batch_id': self.batch_id,
             'labelled': self.labelled,
-            'url': self.get_url()
+            'url': self.get_url(),
+            'iframe_url': self.get_iframe_url()
         })
 
     def __repr__(self):
