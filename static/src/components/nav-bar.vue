@@ -2,7 +2,7 @@
 	<div>
 		<nav class="navbar navbar-light">
 				<a class="navbar-brand" v-if="logged_in">Hello, {{ username }}!</a>
-				<button type="button" class="btn btn-light" v-if="logged_in">Logout</button>
+				<button type="button" class="btn btn-light" v-if="logged_in" @click="logout">Logout</button>
 				<button type="button" class="btn btn-light" v-else="logged_in">Login</button>
 
 		</nav>
@@ -16,7 +16,7 @@
 		props: [],
 		data: function () {
 			return {
-				logged_in: false,
+				logged_in: true,
 				username: '',
 			}
 		},
@@ -29,8 +29,18 @@
 				.then(response => {
 					this.logged_in = response.data.logged_in;
 					this.current_user = response.data.username || '';
-			})
-			}
+				})
+			},
+			logout: function () {
+				axios.get('/api/logout')
+				.then(response => {
+					// TODO handle data(logged in flag & current user) on logout
+					this.message = response.data.logged_out
+				})
+				.catch(e => {
+					this.errors.push(e)
+				})
+			},
 		}
 	}
 </script>

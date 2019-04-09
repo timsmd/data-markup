@@ -1,8 +1,9 @@
 <template>
 	<div>
-		<div class="container my-3">
-			<div class="embed-responsive embed-responsive-1by1 mx-auto">
-				<iframe class="embed-responsive-item mw-50" src="https://www.yooying.com/tim_smd"></iframe>
+		<p class="text-center">Profile:</p>
+		<div class="container mb-3">
+			<div class="embed-responsive embed-responsive-1by1 my-auto mx-auto">
+				<iframe class="embed-responsive-item" v-bind:src="'https://www.yooying.com/'+current_profile"></iframe>
 			</div>
 		</div>
 			<div class="container mx-auto" v-for="item in classes">
@@ -26,7 +27,8 @@
 		name: 'vote-class',
 		data: function () {
 			return {
-				classes: []
+				classes: [],
+				current_profile: 'tim_smd',
 			}
 		},
 		created: function () {
