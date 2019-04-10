@@ -3,7 +3,7 @@
 		<div id='nav-bar' class='bg-dark text-light'>
 			<nav-bar></nav-bar>
 		</div>
-		<div id='main-body' class='bg-light text-dark'>
+		<div id='main-body' class='bg-white text-dark'>
 			<vote-class v-if='modifiers.show_vote' id='vote-class'></vote-class>
 			<!-- <hello-screen v-if='modifiers.show_hello' id='hello-screen'></hello-screen> -->
 			<!-- <sign-in id="sign-in"></sign-in> -->
