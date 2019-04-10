@@ -2,14 +2,20 @@
 	<div>
 		<p class="text-center">Profile:</p>
 		<div class="container mb-3">
-			<div class="embed-responsive embed-responsive-1by1 my-auto mx-auto">
-				<iframe class="embed-responsive-item" v-bind:src="'https://www.yooying.com/'+current_profile"></iframe>
+			<div class="embed-responsive embed-responsive-4by3 my-auto mx-auto wrap" style=" -webkit-overflow-scrolling:touch;">
+				<iframe
+				v-if="isMobile()"
+				class="embed-responsive-item"
+				v-bind:src="'https://web.stagram.com/'+current_profile"
+				></iframe>
 			</div>
 		</div>
-		<div class="container mx-auto">
+		<div class="container mx-auto" style="max-width: 900px;">
 			<div class="form-row text-center my-3" v-for="item in classes">
 				<div class="btn-group btn-group-toggle col-sm-12 mx-auto">
-					<label class="btn btn-primary col-md-6">
+					<label class="btn btn-primary col-md-6 btn-lg"
+					 v-bind:class="{ active: votes[''+item.id]=='1'}">
+						<!-- :checked="votes[''+item.id]=='1' ? true : false"> -->
 						<input type="radio"
 						v-bind:name="'group_'+item.id"
 						v-bind:id="'group_'+item.id+'_1'"
@@ -17,7 +23,8 @@
 						value="1"
 						v-model="votes[''+item.id]">{{ item.if_true }}
 					</label>
-					<label class="btn btn-info col-md-6">
+					<label class="btn btn-info col-md-6 btn-lg"
+					 v-bind:class="{ active: votes[''+item.id]=='0'}">
 						<input type="radio" 
 						v-bind:name="'group_'+item.id"
 						v-bind:id="'group_'+item.id+'_2'"
@@ -25,7 +32,8 @@
 						v-model="votes[''+item.id]"
 						value="0">{{ item.if_false }}
 					</label>
-					<label class="btn btn-dark col-md-6">
+					<label class="btn btn-dark col-md-6 btn-lg"
+					 v-bind:class="{ active: votes[''+item.id]=='-1'}">
 						<input type="radio"
 						v-bind:name="'group_'+item.id"
 						v-bind:id="'group_'+item.id+'_3'"
@@ -38,7 +46,7 @@
 			<div class="form-row text-center my-3">
 				<span>votes: {{votes}}</span>
 				<div class="col-sm-12 mx-auto mb-4">
-					<button type="button" class="btn btn-danger col-sm-12" @click="">Vote</button>
+					<button type="button" class="btn btn-danger col-sm-12 btn-lg" @click="">Vote</button>
 				</div>
 			</div>
 		</div>
@@ -46,6 +54,7 @@
 </template>
 <script>
 	import axios from 'axios'
+	import isMobile from '../isMobile'
 	export default {
 		name: 'vote-class',
 		data: function () {
@@ -61,6 +70,9 @@
 		props: {
 		},
 		methods: {
+			isMobile: function () {
+				return isMobile()
+			},
 			get_classes: function () {
 				axios.get('/api/classes')
 				.then(response => {
@@ -91,3 +103,28 @@
 		}
 	}
 </script>
+
+<style type="text/css">
+	   .wrap {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+      position: relative;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      top: 0;
+      -webkit-overflow-scrolling: touch !important;
+      overflow-y: auto !important;
+      border: 2px solid #ddd;
+      margin-bottom: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      position: absolute;
+    }
+</style>
