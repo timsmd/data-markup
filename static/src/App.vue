@@ -5,7 +5,7 @@
 		</div>
 		<div id='main-body' class='bg-white text-dark'>
 			<hello-screen v-if='display_module === 1' @redirect_route="redirect" id='hello-screen'></hello-screen>
-			<vote-class v-if='display_module === 2' id='vote-class'></vote-class>
+			<vote-class :login_info="this.login_info" v-if='display_module === 2' id='vote-class'></vote-class>
 			<sign-in v-if="display_module === 3"  @redirect_route="redirect" @loggedInState="login_update" id="sign-in"></sign-in>
 		</div>
 	</div>
@@ -17,21 +17,17 @@
 		name: 'app',
 		data: function () {
 			return {
-				display_module: null,
+				display_module: 0,
 				login_info: {
+					logged_in: null,
 					current_user: '',
-					logged_in: false,
 				},
 			}
 		},
 		created: function() {
 			this.check_login();
-			if (this.login_info.logged_in) {
-				this.display_module = 2;
-			}
-			else {
-				this.display_module = 1;
-			}
+			// TODO fix this
+			this.display_module = this.login_info.logged_in ? 2 : 1;
 		},
 		methods: {
 			check_login: function () {

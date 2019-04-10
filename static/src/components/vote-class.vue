@@ -18,7 +18,7 @@
 		<div class="container mx-auto" style="max-width: 900px;">
 			<div class="form-row text-center my-3" v-for="item in classes">
 				<div class="btn-group btn-group-toggle col-sm-12 mx-auto">
-					<label class="btn btn-primary col-md-6 btn-lg"
+					<label class="btn btn-outline-primary col-md-6 btn-lg"
 					 v-bind:class="{ active: votes[''+item.id]=='1'}">
 						<input type="radio"
 						v-bind:name="'group_'+item.id"
@@ -27,7 +27,7 @@
 						value="1"
 						v-model="votes[''+item.id]">{{ item.if_true }}
 					</label>
-					<label class="btn btn-info col-md-6 btn-lg"
+					<label class="btn btn-outline-info col-md-6 btn-lg"
 					 v-bind:class="{ active: votes[''+item.id]=='0'}">
 						<input type="radio" 
 						v-bind:name="'group_'+item.id"
@@ -36,7 +36,7 @@
 						v-model="votes[''+item.id]"
 						value="0">{{ item.if_false }}
 					</label>
-					<label class="btn btn-dark col-md-6 btn-lg"
+					<label class="btn btn-outline-dark col-md-6 btn-lg"
 					 v-bind:class="{ active: votes[''+item.id]=='-1'}">
 						<input type="radio"
 						v-bind:name="'group_'+item.id"
@@ -71,8 +71,7 @@
 		created: function () {
 			this.get_classes();
 		},
-		props: {
-		},
+		props: ['login_info'],
 		methods: {
 			isMobile: function () {
 				return isMobile()

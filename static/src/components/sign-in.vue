@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="container mx-auto text-center">
-			<p class="text-center">Sign In:</p>
+			<button type="button" class="btn btn-outline-dark my-3 col-sm-6" @click="change_mode">Switch to {{ mode_name }}</button>
 			<div class="form-row text-center">
 				<div class="col-sm-6 mx-auto mt-3">
 					<label for="validationCustomUsername">Username</label>
@@ -24,7 +24,8 @@
 			</div>
 			<div class="form-row text-center">
 				<div class="col-sm-6 mx-auto mb-4">
-					<button type="button" class="btn btn-primary col-6" @click="login">Log In</button>
+					<button v-if="mode === 1" type="button" class="btn btn-primary col-6" @click="login">Log In</button>
+					<button v-if="mode === 2" type="button" class="btn btn-dark col-6" @click="signup">Sign Up</button>
 				</div>
 			</div>
 		</div>
@@ -41,9 +42,23 @@
 				username: '',
 				password: '',
 				errors: [],
+				mode: 1,
+				mode_name: 'Sign Up',
 			}
 		},
 		methods: {
+			change_mode: function () {
+				if (this.mode === 1) {
+					this.mode = 2;
+					this.mode_name = 'Log In';
+					return;
+				}
+				if (this.mode === 2) {
+					this.mode = 1;
+					this.mode_name = 'Sign Up';
+					return;
+				}
+			},
 			login: function () {
 				if (this.username != '' && this.password != '') {
 					axios.post('/api/login', {
@@ -62,7 +77,9 @@
 					.catch(e => {
 						this.errors.push(e)
 					})
+					return;
 				}
+				this.message = 'username and password must not be empty'
 			},
 			signup: function () {
 				if (this.username != '' && this.password != '') {
@@ -71,15 +88,18 @@
 						password: this.password
 					})
 					.then(response => {
-						//TODO add checkers
-						this.message = response.data.username + ' signed up';
-						this.$emit('loggedInState', { logged_in:true, current_user: this.username });
-						this.$emit('redirect_route', 2);
+						this.message = response.data.info;
+						if (response.data.signed_up) {
+							this.$emit('loggedInState', { logged_in:true, current_user: this.username });
+							this.$emit('redirect_route', 2);
+						}
 					})
 					.catch(error => {
 						this.errors.push(error)
 					})
+					return;
 				}
+				this.message = 'username and password must not be empty'
 			},
 		}
 	}
