@@ -49,7 +49,7 @@ def check_login():
 		'logged_in': False
 	}))
 
-@app.route('/api/profile')
+@app.route('/api/profiles')
 def get_profiles():
 	# TODO add status selection
 

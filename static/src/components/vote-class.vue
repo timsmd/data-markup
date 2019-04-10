@@ -85,8 +85,8 @@
 					this.errors.push(e)
 				})
 			},
-			get_profile: function () {
-				axios.get('/api/profile')
+			get_profiles: function () {
+				axios.get('/api/profiles')
 				.then(response => {
 					this.profile_classes = response.data.classes
 				})
