@@ -38,7 +38,7 @@ def cast_vote():
 				'info': ';'.join(vote.__repr__() for vote in votes_info)
 			}))
 
-@app.route('/api/check/login')
+@app.route('/api/check_login')
 def check_login():
 	if current_user.is_authenticated:
 		return(jsonify({
@@ -136,6 +136,7 @@ def sign_up():
 		new_user.set_password(post_data['password'])
 		db.session.add(new_user)
 		db.session.commit()
+		login_user(new_user)
 		return(jsonify({
 			'username': new_user.username,
 			'signed_up': True
