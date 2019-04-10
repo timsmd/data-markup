@@ -4,9 +4,9 @@
 			<nav-bar></nav-bar>
 		</div>
 		<div id='main-body' class='bg-light text-dark'>
-			<button @click='change'>change</button>
-			<vote-class v-if='modifiers.show_vote' id='vote-class'></vote-class>		
-			<hello-screen v-if='modifiers.show_hello' id='hello-screen'></hello-screen>
+			<vote-class v-if='modifiers.show_vote' id='vote-class'></vote-class>
+			<!-- <hello-screen v-if='modifiers.show_hello' id='hello-screen'></hello-screen> -->
+			<!-- <sign-in id="sign-in"></sign-in> -->
 		</div>
 	</div>
 </template>
@@ -17,9 +17,9 @@
 		name: 'app',
 		data: function () {
 			return {
-				msg: '',
+				msg: 'kek',
 				modifiers: {
-					show_vote: false,
+					show_vote: true,
 					show_hello: true,
 				},
 				current_user: '',
@@ -43,48 +43,6 @@
 			change: function () {
 				this.modifiers.show_vote = !this.modifiers.show_vote;
 				this.modifiers.show_hello = !this.modifiers.show_hello;
-			},
-			login: function () {
-				if (this.username != '' && this.password != '') {
-					axios.post('/api/login', {
-						username: this.username,
-						password: this.password
-					})
-					.then(response => {
-						if (response.data.logged_in) {
-							this.logged_in = true;
-							this.current_user = response.data.username;
-							this.msg = this.current_user + ' logged in';
-						}
-					})
-					.catch(e => {
-						this.errors.push(e)
-					})
-				}
-			},
-			signup: function () {
-				if (this.username != '' && this.password != '') {
-					axios.post('/api/signup', {
-						username: this.username,
-						password: this.password
-					})
-					.then(response => {
-						this.msg = response.data.username + ' signed up'
-					})
-					.catch(error => {
-						this.errors.push(error)
-					})
-				}
-			},
-			logout: function () {
-				axios.get('/api/logout')
-				.then(response => {
-					// TODO handle data(logged in flag & current user) on logout
-					this.msg = response.data.logged_out
-				})
-				.catch(e => {
-					this.errors.push(e)
-				})
 			},
 		}
 	}

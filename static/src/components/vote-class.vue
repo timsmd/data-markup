@@ -6,19 +6,42 @@
 				<iframe class="embed-responsive-item" v-bind:src="'https://www.yooying.com/'+current_profile"></iframe>
 			</div>
 		</div>
-			<div class="container mx-auto" v-for="item in classes">
-				<div class="btn-group btn-group-toggle col-md-12 my-1 mx-auto" data-toggle="buttons">
-					<label class="btn btn-primary col-md-4">
-						<input type="radio" v-bind:name="'group_'+item.id" v-bind:id="'group_'+item.id+'_1'" autocomplete="off" value=1>{{ item.if_true }}
+		<div class="container mx-auto">
+			<div class="form-row text-center my-3" v-for="item in classes">
+				<div class="btn-group btn-group-toggle col-sm-12 mx-auto">
+					<label class="btn btn-primary col-md-6">
+						<input type="radio"
+						v-bind:name="'group_'+item.id"
+						v-bind:id="'group_'+item.id+'_1'"
+						autocomplete="off"
+						value="1"
+						v-model="votes[''+item.id]">{{ item.if_true }}
 					</label>
-					<label class="btn btn-info col-md-4">
-						<input type="radio" v-bind:name="'group_'+item.id" v-bind:id="'group_'+item.id+'_2'" autocomplete="off" value=0>{{ item.if_false }}
+					<label class="btn btn-info col-md-6">
+						<input type="radio" 
+						v-bind:name="'group_'+item.id"
+						v-bind:id="'group_'+item.id+'_2'"
+						autocomplete="off"
+						v-model="votes[''+item.id]"
+						value="0">{{ item.if_false }}
 					</label>
-					<label class="btn btn-dark col-md-4">
-						<input type="radio" v-bind:name="'group_'+item.id" v-bind:id="'group_'+item.id+'_3'" autocomplete="off" value=-1>Not sure
+					<label class="btn btn-dark col-md-6">
+						<input type="radio"
+						v-bind:name="'group_'+item.id"
+						v-bind:id="'group_'+item.id+'_3'"
+						autocomplete="off"
+						v-model="votes[''+item.id]"
+						value="-1">Not sure
 					</label>
 				</div>
 			</div>
+			<div class="form-row text-center my-3">
+				<span>votes: {{votes}}</span>
+				<div class="col-sm-12 mx-auto mb-4">
+					<button type="button" class="btn btn-danger col-sm-12" @click="">Vote</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -29,6 +52,7 @@
 			return {
 				classes: [],
 				current_profile: 'tim_smd',
+				votes: {},
 			}
 		},
 		created: function () {
