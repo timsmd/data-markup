@@ -1,12 +1,12 @@
 <template>
 	<div id='app'>
 		<div id='nav-bar' class='bg-dark text-light'>
-			<nav-bar></nav-bar>
+			<nav-bar :login_info="this.login_info" @redirect_route="redirect" @loggedInState="login_update"></nav-bar>
 		</div>
 		<div id='main-body' class='bg-white text-dark'>
-			<vote-class v-if='modifiers.show_vote' id='vote-class'></vote-class>
-			<!-- <hello-screen v-if='modifiers.show_hello' id='hello-screen'></hello-screen> -->
-			<!-- <sign-in id="sign-in"></sign-in> -->
+			<hello-screen v-if='display_module === 1' @redirect_route="redirect" id='hello-screen'></hello-screen>
+			<vote-class v-if='display_module === 2' id='vote-class'></vote-class>
+			<sign-in v-if="display_module === 3"  @redirect_route="redirect" @loggedInState="login_update" id="sign-in"></sign-in>
 		</div>
 	</div>
 </template>
@@ -17,32 +17,36 @@
 		name: 'app',
 		data: function () {
 			return {
-				msg: 'kek',
-				modifiers: {
-					show_vote: true,
-					show_hello: true,
+				display_module: null,
+				login_info: {
+					current_user: '',
+					logged_in: false,
 				},
-				current_user: '',
-				logged_in: '',
-				username: '',
-				password: '',
-				profiles: [],
-				profile_classes: [],
-				errors: [],
-				current_profile: 4,
 			}
 		},
-		created: function () {
-			axios.get('/api/check/login')
-			.then(response => {
-				this.logged_in = response.data.logged_in;
-				this.current_user = response.data.username || '';
-			})
+		created: function() {
+			this.check_login();
+			if (this.login_info.logged_in) {
+				this.display_module = 2;
+			}
+			else {
+				this.display_module = 1;
+			}
 		},
 		methods: {
-			change: function () {
-				this.modifiers.show_vote = !this.modifiers.show_vote;
-				this.modifiers.show_hello = !this.modifiers.show_hello;
+			check_login: function () {
+				axios.get('/api/check_login')
+				.then(response => {
+					this.login_info.logged_in = response.data.logged_in;
+					this.login_info.current_user = response.data.username || '';
+				})
+			},
+			login_update: function (info) {
+				this.login_info.logged_in = info.logged_in;
+				this.login_info.current_user = info.current_user;
+			},
+			redirect: function (route) {
+				this.display_module = route;
 			},
 		}
 	}

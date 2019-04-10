@@ -40,6 +40,7 @@
 				message: '',
 				username: '',
 				password: '',
+				errors: [],
 			}
 		},
 		methods: {
@@ -50,11 +51,13 @@
 						password: this.password
 					})
 					.then(response => {
+						this.message = response.data.info;
 						if (response.data.logged_in) {
 							this.logged_in = true;
 							this.current_user = response.data.username;
+							this.$emit('loggedInState', { logged_in:true, current_user: this.username });
+							this.$emit('redirect_route', 2);
 						}
-						this.message = response.data.info;
 					})
 					.catch(e => {
 						this.errors.push(e)
@@ -68,7 +71,10 @@
 						password: this.password
 					})
 					.then(response => {
-						this.message = response.data.username + ' signed up'
+						//TODO add checkers
+						this.message = response.data.username + ' signed up';
+						this.$emit('loggedInState', { logged_in:true, current_user: this.username });
+						this.$emit('redirect_route', 2);
 					})
 					.catch(error => {
 						this.errors.push(error)

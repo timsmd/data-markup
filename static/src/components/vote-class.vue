@@ -8,6 +8,11 @@
 				class="embed-responsive-item"
 				v-bind:src="'https://web.stagram.com/'+current_profile"
 				></iframe>
+				<iframe
+				v-if="!isMobile()"
+				class="embed-responsive-item"
+				v-bind:src="'https://yooying.com/'+current_profile"
+				></iframe>
 			</div>
 		</div>
 		<div class="container mx-auto" style="max-width: 900px;">
@@ -15,7 +20,6 @@
 				<div class="btn-group btn-group-toggle col-sm-12 mx-auto">
 					<label class="btn btn-primary col-md-6 btn-lg"
 					 v-bind:class="{ active: votes[''+item.id]=='1'}">
-						<!-- :checked="votes[''+item.id]=='1' ? true : false"> -->
 						<input type="radio"
 						v-bind:name="'group_'+item.id"
 						v-bind:id="'group_'+item.id+'_1'"
@@ -65,7 +69,7 @@
 			}
 		},
 		created: function () {
-			this.get_classes()
+			this.get_classes();
 		},
 		props: {
 		},
@@ -108,7 +112,8 @@
 	   .wrap {
       width: 100%;
       height: 100%;
-      min-height: 500px;
+      min-height: 400px;
+      max-height: 500px;
       position: relative;
       right: 0;
       bottom: 0;
