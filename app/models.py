@@ -30,8 +30,21 @@ class Profile(db.Model):
     batch_id = db.Column(db.Integer, db.ForeignKey('batch.id'))
     labelled = db.Column(db.Boolean, default=False)
 
-    def get_url():
+    def get_url(self):
         return 'https://instagram.com/{}'.format(self.insta_username)
+
+    def get_iframe_url(self):
+        return 'https://www.yooying.com/{}'.format(self.insta_username)
+
+    def get_dict(self):
+        return({
+            'id': self.id,
+            'insta_username': self.insta_username,
+            'batch_id': self.batch_id,
+            'labelled': self.labelled,
+            'url': self.get_url(),
+            'iframe_url': self.get_iframe_url()
+        })
 
     def __repr__(self):
         return '<Profile {} (id: {})>'.format(self.insta_username, self.id)
@@ -43,17 +56,29 @@ class Profileclass(db.Model):
     if_true = db.Column(db.String(64))
     if_false = db.Column(db.String(64))
 
+    def get_dict(self):
+        return({
+            'id': self.id,
+            'name': self.class_name,
+            'if_true': self.if_true,
+            'if_false': self.if_false
+        })
+
     def __repr__(self):
-        return '<Class {}: {} /n(id: {})>'.format(self.name, self.description, self.id)
+        return '<Class {}: {} /n(id: {})>'.format(self.class_name, self.description, self.id)
 
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
     class_id = db.Column(db.Integer, db.ForeignKey('profileclass.id'))
     value = db.Column(db.Integer)
     session = db.Column(db.String(200))
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'profile_id', 'class_id', name='user_class_profile_uc'),
+        db.UniqueConstraint('session', 'profile_id', 'class_id', name='session_class_profile_uc')
+    )
 
     def __repr__(self):
         return '<User {} voted for profile {} in {} to be {}>'.format(self.user_id, self.profile_id, self.class_id, self.value)

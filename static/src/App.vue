@@ -1,78 +1,49 @@
 <template>
-	<div id="app">
-		<h1>App says: {{ msg }}</h1>
-		<p>login form</p>
-		<input v-model="username" placeholder="username">
-		<input v-model="password" placeholder="password">
-		<button v-on:click="login">Login</button>
-		<button v-on:click="logout">Logout</button>
-		<p>sign up form</p>
-		<button v-on:click="signup">Sign up</button>
+	<div id='app'>
+		<div id='nav-bar' class='bg-dark text-light'>
+			<nav-bar></nav-bar>
+		</div>
+		<div id='main-body' class='bg-light text-dark'>
+			<vote-class v-if='modifiers.show_vote' id='vote-class'></vote-class>
+			<!-- <hello-screen v-if='modifiers.show_hello' id='hello-screen'></hello-screen> -->
+			<!-- <sign-in id="sign-in"></sign-in> -->
+		</div>
 	</div>
 </template>
 
 <script>
  	import axios from 'axios';
-
  	export default {
 		name: 'app',
-		data() {
+		data: function () {
 			return {
-				msg: '',
+				msg: 'kek',
+				modifiers: {
+					show_vote: true,
+					show_hello: true,
+				},
+				current_user: '',
+				logged_in: '',
 				username: '',
 				password: '',
-				profile: {},
-				classes: [],
-				errors: []
+				profiles: [],
+				profile_classes: [],
+				errors: [],
+				current_profile: 4,
 			}
 		},
-		// get classes from db on created page
+		created: function () {
+			axios.get('/api/check/login')
+			.then(response => {
+				this.logged_in = response.data.logged_in;
+				this.current_user = response.data.username || '';
+			})
+		},
 		methods: {
-			login: function () {
-				if (this.username != '' && this.password != '') {
-					axios.post('/api/login', {
-						username: this.username,
-						password: this.password
-					})
-					.then(response => {
-						if (response.data.logged_in) {
-							this.msg = response.data.username + ' logged in'
-						}
-					})
-					.catch(e => {
-						this.errors.push(e)
-					})
-				}
+			change: function () {
+				this.modifiers.show_vote = !this.modifiers.show_vote;
+				this.modifiers.show_hello = !this.modifiers.show_hello;
 			},
-			signup: function () {
-				if (this.username != '' && this.password != '') {
-					axios.post('/api/signup', {
-						username: this.username,
-						password: this.password
-					})
-					.then(response => {
-						this.msg = response.data.username + ' signed up'
-					})
-					.catch(e => {
-						this.errors.push(e)
-					})
-				}
-			},
-			logout: function () {
-				axios.get('/api/logout')
-				.then(response => {
-					this.msg = response.data.logged_out
-				})
-				.catch(e => {
-					this.errors.push(e)
-				})
-			},
-			vote: function () {
-
-			},
-			get_profile: function () {
-
-			}
 		}
 	}
 </script>
