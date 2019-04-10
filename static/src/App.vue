@@ -25,13 +25,14 @@
 			}
 		},
 		created: function() {
-			this.check_login();
-			// TODO fix this
-			this.display_module = this.login_info.logged_in ? 2 : 1;
+			this.check_login()
+			.then( r => {				
+				this.display_module = this.login_info.logged_in ? 2 : 1;
+			})
 		},
 		methods: {
 			check_login: function () {
-				axios.get('/api/check_login')
+				return axios.get('/api/check_login')
 				.then(response => {
 					this.login_info.logged_in = response.data.logged_in;
 					this.login_info.current_user = response.data.username || '';
