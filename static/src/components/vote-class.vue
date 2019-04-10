@@ -68,10 +68,11 @@
 				votes: {},
 			}
 		},
+		props: ['login_info'],
 		created: function () {
 			this.get_classes();
+			this.get_profiles();
 		},
-		props: ['login_info'],
 		methods: {
 			isMobile: function () {
 				return isMobile()
