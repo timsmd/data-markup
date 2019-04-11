@@ -26,17 +26,17 @@
 		},
 		created: function() {
 			this.check_login()
-			.then( r => {				
+			.then(r => {				
 				this.display_module = this.login_info.logged_in ? 2 : 1;
 			})
 		},
 		methods: {
 			check_login: function () {
 				return axios.get('/api/check_login')
-				.then(response => {
-					this.login_info.logged_in = response.data.logged_in;
-					this.login_info.current_user = response.data.username || '';
-				})
+					.then(response => {
+						this.login_info.logged_in = response.data.logged_in;
+						this.login_info.current_user = response.data.username || '';
+					})
 			},
 			login_update: function (info) {
 				this.login_info.logged_in = info.logged_in;
