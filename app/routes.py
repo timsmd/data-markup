@@ -30,12 +30,12 @@ def cast_vote():
 		except:
 			return (jsonify({
 				'voted': False,
-				'info': ';'.join(vote.__repr__() for vote in votes_info)
+				'info': ';\n'.join(vote.__repr__() for vote in votes_info)
 			}))
 		else:
 			return (jsonify({
 				'voted': True,
-				'info': ';'.join(vote.__repr__() for vote in votes_info)
+				'info': ';\n'.join(vote.__repr__() for vote in votes_info)
 			}))
 
 @app.route('/api/check_login')
