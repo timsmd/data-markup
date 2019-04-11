@@ -8,7 +8,12 @@
 			</div>
 			<div class="row">
 				<div class="col-6 mx-auto my-2 text-center">
-					<a href=# v-on:click="$emit('redirect_route', 2)">or vote without loggin in...</a>
+					<a href=# v-on:click="$emit('redirect_route', 2)">or vote without signing in...</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6 mx-auto my-2 text-center">
+					<p>When voting without sign in you lose progress every time you update the page</p>
 				</div>
 			</div>
 		</div>
@@ -18,9 +23,5 @@
 <script>
 	export default {
 		name: 'hello-screen',
-		props: [],
-		methods: {
-
-		}
 	}
 </script>
