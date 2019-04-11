@@ -1,17 +1,25 @@
 <template>
 	<div>
-		<p class="text-center">Profile:</p>
-		<div class="container mb-3">
+		<div class="row mt-2">
+			<div class="col-6 mx-auto text-center">
+				<p>
+					<a target="_blank" 
+					v-bind:href="current_profile.url">{{ current_profile.insta_username }}</a>
+					on Instagram
+				</p>
+			</div>
+		</div>
+		<div class="container mb-2">
 			<div class="embed-responsive embed-responsive-4by3 my-auto mx-auto wrap" style=" -webkit-overflow-scrolling:touch;">
 				<iframe
 				v-if="isMobile()"
 				class="embed-responsive-item"
-				v-bind:src="'https://web.stagram.com/'+current_profile"
+				v-bind:src="current_profile.iframe_mobile"
 				></iframe>
 				<iframe
 				v-if="!isMobile()"
 				class="embed-responsive-item"
-				v-bind:src="'https://yooying.com/'+current_profile"
+				v-bind:src="current_profile.iframe_desktop"
 				></iframe>
 			</div>
 		</div>
@@ -56,27 +64,37 @@
 					v-bind:class="{disabled: !check_votes()}"
 					@click="vote">Vote</button>
 				</div>
+				<div class="col-sm-12 mx-auto mb-4">
+					<button 
+					type="button"
+					class="btn btn-light col-sm-12 btn-lg"
+					@click="skip">Skip</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-	import axios from 'axios'
-	import isMobile from '../util/isMobile'
+	import axios from 'axios';
+	import isMobile from '../util/isMobile';
+	import getRandom from '../util/randomArrayElement';
 	export default {
 		name: 'vote-class',
 		data: function () {
 			return {
 				classes: [],
 				profiles: [],
-				current_profile: 'tim_smd',
+				current_profile: {},
 				votes: {},
 			}
 		},
 		props: ['login_info'],
 		created: function () {
 			this.get_classes();
-			this.get_profiles();
+			this.get_profiles()
+			.then(r => {
+				this.current_profile = getRandom(this.profiles)
+			})
 		},
 		methods: {
 			isMobile: function () {
@@ -92,13 +110,13 @@
 				})
 			},
 			get_profiles: function () {
-				axios.get('/api/profiles')
-				.then(response => {
-					this.profiles = response.data
-				})
-				.catch(e => {
-					this.errors.push(e)
-				})
+				return axios.get('/api/profiles')
+					.then(response => {
+						this.profiles = response.data;
+					})
+					.catch(e => {
+						this.errors.push(e)
+					})
 			},
 			check_votes: function () {
 				return (Object.keys(this.votes).length == this.classes.length) ? true : false;
@@ -113,14 +131,20 @@
 						})
 					}
 					axios.post('/api/vote',{
-						profile: this.current_profile,
+						profile: this.current_profile.id,
 						votes: current_votes,
 					})
 					.then(response => {
-						//
+						this.profiles.splice(this.current_profile.index);
+						this.current_profile = getRandom(this.profiles)
+						this.votes = {};
 					})		
 				}
 			},
+			skip: function () {
+				this.current_profile = getRandom(this.profiles)
+				this.votes = {};
+			}
 		}
 	}
 </script>
