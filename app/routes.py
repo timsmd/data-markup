@@ -70,12 +70,7 @@ def get_profiles():
 @app.route('/api/classes')
 def get_classes():
 	classes = Profileclass.query.all()
-	response = {
-		'classes': []
-	}
-	for each in classes:
-		response['classes'].append(each.get_dict())
-	
+	response = [each.get_dict() for each  in classes]
 	return(jsonify(response))
 
 @app.route('/api/login', methods=['POST', 'GET'])

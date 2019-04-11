@@ -50,7 +50,11 @@
 			<div class="form-row text-center my-3">
 				<span>votes: {{votes}}</span>
 				<div class="col-sm-12 mx-auto mb-4">
-					<button type="button" class="btn btn-danger col-sm-12 btn-lg" @click="">Vote</button>
+					<button 
+					type="button"
+					class="btn btn-danger col-sm-12 btn-lg"
+					v-bind:class="{disabled: !check_votes()}"
+					@click="vote">Vote</button>
 				</div>
 			</div>
 		</div>
@@ -58,12 +62,13 @@
 </template>
 <script>
 	import axios from 'axios'
-	import isMobile from '../isMobile'
+	import isMobile from '../util/isMobile'
 	export default {
 		name: 'vote-class',
 		data: function () {
 			return {
 				classes: [],
+				profiles: [],
 				current_profile: 'tim_smd',
 				votes: {},
 			}
@@ -80,7 +85,7 @@
 			get_classes: function () {
 				axios.get('/api/classes')
 				.then(response => {
-					this.classes = response.data.classes
+					this.classes = response.data
 				})
 				.catch(e => {
 					this.errors.push(e)
@@ -89,20 +94,32 @@
 			get_profiles: function () {
 				axios.get('/api/profiles')
 				.then(response => {
-					this.profile_classes = response.data.classes
+					this.profiles = response.data
 				})
 				.catch(e => {
 					this.errors.push(e)
 				})
 			},
+			check_votes: function () {
+				return (Object.keys(this.votes).length == this.classes.length) ? true : false;
+			},
 			vote: function () {
-				axios.post('/api/vote',{
-					profile: this.current_profile,
-					votes: this.votes
-				})
-				.then(response => {
-					//
-				})
+				if (this.check_votes()) {
+					let current_votes = [];
+					for (let key in this.votes) {
+						current_votes.push({
+							class: Number(key),
+							value: Number(this.votes[key]),
+						})
+					}
+					axios.post('/api/vote',{
+						profile: this.current_profile,
+						votes: current_votes,
+					})
+					.then(response => {
+						//
+					})		
+				}
 			},
 		}
 	}
