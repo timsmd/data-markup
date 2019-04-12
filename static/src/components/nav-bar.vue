@@ -1,10 +1,16 @@
 <template>
 	<div>
 		<nav class="navbar navbar-light">
-				<a class="navbar-brand" v-if="logged_in">Hello, {{ username }}!</a>
-				<button type="button" class="btn btn-light" v-if="logged_in" @click="logout">Logout</button>
-				<button type="button" class="btn btn-light" v-else="logged_in">Login</button>
-
+				<a class="navbar-brand text-light"
+				@click="$emit('redirect_route', 2)"
+				href=#
+				v-if="login_info.logged_in">Hello, {{ login_info.current_user }}!</a>
+				<a class="navbar-brand text-light"
+				@click="$emit('redirect_route', 1)"
+				href=#
+				v-else="login_info.logged_in">Home</a>
+				<button type="button" v-if="login_info.logged_in" class="btn btn-light" @click="logout">Logout</button>
+				<button type="button" v-else="login_info.logged_in" class="btn btn-light" @click="$emit('redirect_route', 3)">Login</button>
 		</nav>
 	</div>
 </template>
@@ -13,29 +19,21 @@
 	import axios from 'axios'
 	export default {
 		name: 'nav-bar',
-		props: [],
+		props: ['login_info'],
 		data: function () {
 			return {
-				logged_in: true,
-				username: '',
+				errors: []
 			}
 		},
-		created: function () {
-			this.login = this.check_login();
-		},
 		methods: {
-			check_login: function () {
-				axios.get('/api/check/login')
-				.then(response => {
-					this.logged_in = response.data.logged_in;
-					this.current_user = response.data.username || '';
-				})
-			},
 			logout: function () {
 				axios.get('/api/logout')
 				.then(response => {
-					// TODO handle data(logged in flag & current user) on logout
-					this.message = response.data.logged_out
+					this.$cookies.remove('session_id')
+					this.message = response.data.logged_out;
+					this.$emit('loggedInState', { logged_in:false, current_user: '' });
+					this.$emit('redirect_route', 1);
+					this.$emit('reset_cookie')
 				})
 				.catch(e => {
 					this.errors.push(e)

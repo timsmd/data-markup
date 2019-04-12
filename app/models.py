@@ -33,8 +33,11 @@ class Profile(db.Model):
     def get_url(self):
         return 'https://instagram.com/{}'.format(self.insta_username)
 
-    def get_iframe_url(self):
+    def get_iframe_desktop(self):
         return 'https://www.yooying.com/{}'.format(self.insta_username)
+
+    def get_iframe_mobile(self):
+        return 'https://web.stagram.com/{}'.format(self.insta_username)
 
     def get_dict(self):
         return({
@@ -43,7 +46,8 @@ class Profile(db.Model):
             'batch_id': self.batch_id,
             'labelled': self.labelled,
             'url': self.get_url(),
-            'iframe_url': self.get_iframe_url()
+            'iframe_desktop': self.get_iframe_desktop(),
+            'iframe_mobile': self.get_iframe_mobile()
         })
 
     def __repr__(self):

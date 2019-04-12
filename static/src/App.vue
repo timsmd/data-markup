@@ -1,48 +1,63 @@
 <template>
 	<div id='app'>
 		<div id='nav-bar' class='bg-dark text-light'>
-			<nav-bar></nav-bar>
+			<nav-bar :login_info="this.login_info"
+			@redirect_route="redirect"
+			@loggedInState="login_update"
+			@reset_cookie="reset_session_cookie"></nav-bar>
 		</div>
-		<div id='main-body' class='bg-light text-dark'>
-			<vote-class v-if='modifiers.show_vote' id='vote-class'></vote-class>
-			<!-- <hello-screen v-if='modifiers.show_hello' id='hello-screen'></hello-screen> -->
-			<!-- <sign-in id="sign-in"></sign-in> -->
+		<div id='main-body' class='bg-white text-dark'>
+			<hello-screen v-if='display_module === 1' @redirect_route="redirect" id='hello-screen'></hello-screen>
+			<vote-class :login_info="this.login_info" v-if='display_module === 2' id='vote-class'></vote-class>
+			<sign-in v-if="display_module === 3"  @redirect_route="redirect" @loggedInState="login_update" id="sign-in"></sign-in>
 		</div>
 	</div>
 </template>
 
 <script>
  	import axios from 'axios';
+
+ 	let hri = require('human-readable-ids').hri;
+
  	export default {
 		name: 'app',
 		data: function () {
 			return {
-				msg: 'kek',
-				modifiers: {
-					show_vote: true,
-					show_hello: true,
+				display_module: 0,
+				login_info: {
+					logged_in: null,
+					current_user: '',
+					session: '',
 				},
-				current_user: '',
-				logged_in: '',
-				username: '',
-				password: '',
-				profiles: [],
-				profile_classes: [],
-				errors: [],
-				current_profile: 4,
 			}
 		},
-		created: function () {
-			axios.get('/api/check/login')
-			.then(response => {
-				this.logged_in = response.data.logged_in;
-				this.current_user = response.data.username || '';
+		created: function() {
+			this.reset_session_cookie()
+			this.check_login()
+			.then(r => {				
+				this.display_module = this.login_info.logged_in ? 2 : 1;
 			})
 		},
 		methods: {
-			change: function () {
-				this.modifiers.show_vote = !this.modifiers.show_vote;
-				this.modifiers.show_hello = !this.modifiers.show_hello;
+			check_login: function () {
+				return axios.get('/api/check_login')
+					.then(response => {
+						this.login_info.logged_in = response.data.logged_in;
+						this.login_info.current_user = response.data.username || '';
+						this.login_info.session = this.$cookies.get('session_id')
+					})
+			},
+			login_update: function (info) {
+				this.login_info.logged_in = info.logged_in;
+				this.login_info.current_user = info.current_user;
+			},
+			redirect: function (route) {
+				this.display_module = route;
+			},
+			reset_session_cookie: function () {
+				if (!this.$cookies.get('session_id')) {
+					this.$cookies.set('session_id', hri.random(), '60s')
+				}
 			},
 		}
 	}

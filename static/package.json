@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "vue": "^2.5.11"
+    "human-readable-ids": "^1.0.4",
+    "vue": "^2.5.11",
+    "vue-cookies": "^1.5.13"
   },
   "browserslist": [
     "> 1%",

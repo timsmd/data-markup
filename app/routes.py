@@ -1,4 +1,4 @@
-from flask import jsonify, send_from_directory, request, session
+from flask import jsonify, send_from_directory, request
 from flask_login import current_user, login_user, logout_user
 from app import app, db
 from app.models import User, Profile, Profileclass, Vote, Batch
@@ -9,7 +9,7 @@ def cast_vote():
 	if request.method == 'POST':
 		
 		user_id = None
-		session_id = session['_id']
+		session_id = request.cookies.get('session_id')
 
 		if current_user.is_authenticated:
 			user_id = current_user.id
@@ -30,15 +30,15 @@ def cast_vote():
 		except:
 			return (jsonify({
 				'voted': False,
-				'info': ';'.join(vote.__repr__() for vote in votes_info)
+				'info': ';\n'.join(vote.__repr__() for vote in votes_info)
 			}))
 		else:
 			return (jsonify({
 				'voted': True,
-				'info': ';'.join(vote.__repr__() for vote in votes_info)
+				'info': ';\n'.join(vote.__repr__() for vote in votes_info)
 			}))
 
-@app.route('/api/check/login')
+@app.route('/api/check_login')
 def check_login():
 	if current_user.is_authenticated:
 		return(jsonify({
@@ -49,20 +49,20 @@ def check_login():
 		'logged_in': False
 	}))
 
-@app.route('/api/profile')
+@app.route('/api/profiles')
 def get_profiles():
 	# TODO add status selection
 
 	all_profiles = Profile.query.\
 	join(Batch).filter_by(status=0)
 	voted_already = []
-
+	session_id = request.cookies.get('session_id')
 	if current_user.is_authenticated:
 		voted_already = all_profiles.\
 		join(Vote).filter(Vote.user_id == current_user.id).all()
 	else:
 		voted_already = all_profiles.\
-		join(Vote).filter(Vote.session == session['_id']).all()
+		join(Vote).filter(Vote.session == session_id).all()
 
 	response = [profile.get_dict() for profile in all_profiles.all() if profile not in voted_already]
 	return(jsonify(response))
@@ -70,12 +70,7 @@ def get_profiles():
 @app.route('/api/classes')
 def get_classes():
 	classes = Profileclass.query.all()
-	response = {
-		'classes': []
-	}
-	for each in classes:
-		response['classes'].append(each.get_dict())
-	
+	response = [each.get_dict() for each  in classes]
 	return(jsonify(response))
 
 @app.route('/api/login', methods=['POST', 'GET'])
@@ -136,6 +131,7 @@ def sign_up():
 		new_user.set_password(post_data['password'])
 		db.session.add(new_user)
 		db.session.commit()
+		login_user(new_user)
 		return(jsonify({
 			'username': new_user.username,
 			'signed_up': True
