@@ -29,9 +29,11 @@
 			logout: function () {
 				axios.get('/api/logout')
 				.then(response => {
+					this.$cookies.remove('session_id')
 					this.message = response.data.logged_out;
 					this.$emit('loggedInState', { logged_in:false, current_user: '' });
 					this.$emit('redirect_route', 1);
+					this.$emit('reset_cookie')
 				})
 				.catch(e => {
 					this.errors.push(e)
