@@ -10,7 +10,7 @@
 			</div>
 		</div>
 		<div class="container mb-2">
-			<div class="embed-responsive embed-responsive-4by3 my-auto mx-auto wrap" style=" -webkit-overflow-scrolling:touch;">
+			<div class="embed-responsive embed-responsive-4by3 col-sm-12 text-center wrap" style="min-width: 350px">
 				<iframe
 				v-if="isMobile()"
 				class="embed-responsive-item"
