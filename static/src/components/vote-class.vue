@@ -56,7 +56,6 @@
 				</div>
 			</div>
 			<div class="form-row text-center my-3">
-				<span>votes: {{votes}}</span>
 				<div class="col-sm-12 mx-auto mb-4">
 					<button 
 					type="button"
