@@ -88,9 +88,6 @@ module.exports = {
     hints: false
   },
   devtool: '#eval-source-map',
-  plugins: [
-    new HtmlWebpackPlugin()
-  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
