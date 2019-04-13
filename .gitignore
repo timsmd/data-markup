@@ -13,6 +13,6 @@ frontend/yarn-error.log
 *.njsproj
 *.sln
 
-app\.db
+backend/app\.db
 
-data/
+backend/data/
