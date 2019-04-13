@@ -31,8 +31,10 @@
 				},
 			}
 		},
-		created: function() {
-			this.reset_session_cookie()
+		mounted: function () {
+			this.reset_session_cookie();
+		},
+		created: function () {
 			this.check_login()
 			.then(r => {				
 				this.display_module = this.login_info.logged_in ? 2 : 1;
