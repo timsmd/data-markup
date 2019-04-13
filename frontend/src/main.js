@@ -13,12 +13,12 @@ Vue.component('nav-bar', navBar);
 Vue.component('sign-in', signIn);
 
 new Vue({
-  el: '#app',
-  render: h => h(App),
-  components: {
-  	'vote-class': voteClass,
-  	'hello-screen': helloScreen,
-  	'nav-bar': navBar,
-  	'sign-in': signIn,
-  }
+    el: '#app',
+    render: h => h(App),
+    components: {
+        'vote-class': voteClass,
+        'hello-screen': helloScreen,
+        'nav-bar': navBar,
+        'sign-in': signIn,
+    }
 })

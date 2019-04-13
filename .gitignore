@@ -1,8 +1,8 @@
 .DS_Store
-static/node_modules/
-static/dist/
-static/npm-debug.log
-static/yarn-error.log
+frontend/node_modules/
+frontend/dist/
+frontend/npm-debug.log
+frontend/yarn-error.log
 
 *.pyc
 
