@@ -15,4 +15,4 @@ frontend/yarn-error.log
 
 backend/app\.db
 
-backend/data/
+data/
