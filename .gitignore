@@ -14,5 +14,3 @@ frontend/yarn-error.log
 *.sln
 
 backend/app\.db
-
-backend/data/
