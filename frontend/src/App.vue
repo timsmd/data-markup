@@ -58,7 +58,7 @@
             },
             reset_session_cookie: function () {
                 if (!this.$cookies.get('session_id')) {
-                    this.$cookies.set('session_id', hri.random(), '60s')
+                    this.$cookies.set('session_id', hri.random(), '60m')
                 }
             },
         }
