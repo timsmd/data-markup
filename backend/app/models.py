@@ -64,6 +64,7 @@ class Profileclass(db.Model):
         return({
             'id': self.id,
             'name': self.class_name,
+            'description': self.description,
             'if_true': self.if_true,
             'if_false': self.if_false
         })
