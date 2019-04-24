@@ -54,7 +54,7 @@ def get_profiles():
 	# TODO add status selection
 
 	all_profiles = Profile.query.\
-	join(Batch).filter_by(status=0)
+	join(Batch).filter_by(status=1)
 	voted_already = []
 	session_id = request.cookies.get('session_id')
 	if current_user.is_authenticated:
