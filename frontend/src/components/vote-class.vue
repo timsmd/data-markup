@@ -29,8 +29,7 @@
                     <button type="button" 
                     class="btn btn-dark"
                     id="show-modal"
-                    title="Popover title"
-                    data-content="And here's some amazing content. It's very engaging. Right?">
+                    @click="modal.display = !modal.display; modal.class = item;">
                         ?
                     </button>
                     <label class="btn btn-outline-primary col-md-6 btn-lg"
@@ -81,6 +80,15 @@
                 </div>
             </div>
         </div>
+        <modal v-if="modal.display" @close="close_modal">
+            <span slot="header">
+                <h3>{{ modal.class.name }}</h3>
+            </span>
+            <span slot="body">
+                <p><b>Options: </b>{{ modal.class.if_true + "/" + modal.class.if_false}}</p>
+                <p><b>Description: </b>{{ modal.class.description }}</p>
+            </span>
+        </modal>
     </div>
 </template>
 
@@ -98,7 +106,13 @@
                 votes: {},
                 modal: {
                     display: false,
-                    class_id: null,
+                    class: {
+                        id: null,
+                        name: null,
+                        description: null,
+                        if_true: null,
+                        if_false: null,
+                    },
                 }
             }
         },
@@ -134,6 +148,9 @@
             },
             check_votes: function () {
                 return (Object.keys(this.votes).length == this.classes.length) ? true : false;
+            },
+            close_modal: function () {
+                this.modal.display = false
             },
             vote: function () {
                 if (this.check_votes()) {
