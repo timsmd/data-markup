@@ -26,6 +26,13 @@
         <div class="container mx-auto" style="max-width: 900px;">
             <div class="form-row text-center my-3" v-for="item in classes">
                 <div class="btn-group btn-group-toggle col-sm-12 mx-auto">
+                    <button type="button" 
+                    class="btn btn-dark"
+                    id="show-modal"
+                    title="Popover title"
+                    data-content="And here's some amazing content. It's very engaging. Right?">
+                        ?
+                    </button>
                     <label class="btn btn-outline-primary col-md-6 btn-lg"
                      v-bind:class="{ active: votes[''+item.id]=='1'}">
                         <input type="radio"
@@ -33,7 +40,8 @@
                         v-bind:id="'group_'+item.id+'_1'"
                         autocomplete="off"
                         value="1"
-                        v-model="votes[''+item.id]">{{ item.if_true }}
+                        v-model="votes[''+item.id]">
+                            {{ item.if_true }}
                     </label>
                     <label class="btn btn-outline-info col-md-6 btn-lg"
                      v-bind:class="{ active: votes[''+item.id]=='0'}">
@@ -42,7 +50,8 @@
                         v-bind:id="'group_'+item.id+'_2'"
                         autocomplete="off"
                         v-model="votes[''+item.id]"
-                        value="0">{{ item.if_false }}
+                        value="0">
+                            {{ item.if_false }}
                     </label>
                     <label class="btn btn-outline-dark col-md-6 btn-lg"
                      v-bind:class="{ active: votes[''+item.id]=='-1'}">
@@ -51,7 +60,8 @@
                         v-bind:id="'group_'+item.id+'_3'"
                         autocomplete="off"
                         v-model="votes[''+item.id]"
-                        value="-1">Not sure
+                        value="-1">
+                            Not sure
                     </label>
                 </div>
             </div>
@@ -73,6 +83,7 @@
         </div>
     </div>
 </template>
+
 <script>
     import axios from 'axios';
     import isMobile from '../util/isMobile';
@@ -85,6 +96,10 @@
                 profiles: [],
                 current_profile: {},
                 votes: {},
+                modal: {
+                    display: false,
+                    class_id: null,
+                }
             }
         },
         props: ['login_info'],
@@ -172,4 +187,5 @@
         display: block;
         position: absolute;
     }
+
 </style>
