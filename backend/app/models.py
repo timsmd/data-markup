@@ -70,7 +70,7 @@ class Profileclass(db.Model):
         })
 
     def __repr__(self):
-        return '<Class {}: {} /n(id: {})>'.format(self.class_name, self.description, self.id)
+        return '<Class {}: {} \n(id: {})>'.format(self.class_name, self.description, self.id)
 
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
