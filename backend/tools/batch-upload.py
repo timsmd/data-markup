@@ -27,7 +27,8 @@ def load_profiles(filename, batch):
             db.session.add(new_profile)
     try:
         db.session.commit()
-    except:
+    except Exception as er:
+        print(er)
         print('error commiting changes to database')
     else:
         print('{} profiles added to database'.format(counter))
