@@ -54,6 +54,21 @@ class Profile(db.Model):
     def __repr__(self):
         return '<Profile {} (id: {})>'.format(self.insta_username, self.id)
 
+    def check_labelled(self):
+        votes_per_class_counts = db.session.query(Profileclass, func.count(Vote.id)).\
+        select_from(Vote).filter(Vote.value !=-1 and Vote.class_id == Profileclass.id).\
+        join(Profile).filter(Profile.id == self.id).group_by(Profileclass.id).all()
+        
+        for current_class, votes_count in votes_per_class_counts:
+            if (votes_count < 3):
+                return False
+
+        current_profile = Profile.query.filter_by(id=self.id).first()
+        current_profile.labelled = True
+        db.session.add(current_profile)
+        db.session.commit()
+        return True
+
 class Profileclass(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     class_name = db.Column(db.String(64), index=True, unique=True)
