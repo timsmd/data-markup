@@ -86,7 +86,7 @@ class Vote(db.Model):
     )
 
     def __repr__(self):
-        return '<User {} voted for profile {} in {} to be {}>'.format(self.user_id, self.profile_id, self.class_id, self.value)
+        return '<User {}(s: {}) voted for profile {} in {} to be {}>'.format(self.user_id, self.session, self.profile_id, self.class_id, self.value)
 
 
 @login.user_loader
