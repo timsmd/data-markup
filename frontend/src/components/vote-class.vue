@@ -166,8 +166,8 @@
                         votes: current_votes,
                     })
                     .then(response => {
-                        this.profiles.splice(this.current_profile.index);
-                        this.current_profile = getRandom(this.profiles)
+                        this.profiles.splice(this.current_profile.index, 1);
+                        this.current_profile = getRandom(this.profiles);
                         this.votes = {};
                     })      
                 }
