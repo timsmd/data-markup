@@ -13,7 +13,7 @@
             </div>
             <div class="row">
                 <div class="col-6 mx-auto my-2 text-center">
-                    <p>When voting without sign in you lose progress every time you update the page</p>
+                    <p>When voting without sign in you lose progress every time you start a new session (new browser/device, or more then 24h of inactivity on current device)</p>
                 </div>
             </div>
         </div>
