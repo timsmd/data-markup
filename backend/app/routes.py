@@ -33,6 +33,8 @@ def cast_vote():
 				'info': ';\n'.join(vote.__repr__() for vote in votes_info)
 			}))
 		else:
+			voted_profile = Profile.query.get(profile)
+			voted_profile.check_labelled()
 			return (jsonify({
 				'voted': True,
 				'info': ';\n'.join(vote.__repr__() for vote in votes_info)
@@ -53,7 +55,7 @@ def check_login():
 def get_profiles():
 	# TODO add status selection
 
-	all_profiles = Profile.query.\
+	all_profiles = Profile.query.filter(Profile.labelled == False).\
 	join(Batch).filter_by(status=1)
 	voted_already = []
 	session_id = request.cookies.get('session_id')
