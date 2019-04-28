@@ -100,6 +100,7 @@
         name: 'vote-class',
         data: function () {
             return {
+                counter: 0,
                 classes: [],
                 profiles: [],
                 current_profile: {},
@@ -167,6 +168,16 @@
                     })
                     .then(response => {
                         this.profiles.splice(this.current_profile.index, 1);
+                        this.counter++;
+                        if (this.counter >= 3) {
+                            this.get_profiles()
+                            .then(r => {
+                                this.current_profile = getRandom(this.profiles);
+                                this.votes = {};
+                                this.counter = 0;
+                                return       
+                            })
+                        }
                         this.current_profile = getRandom(this.profiles);
                         this.votes = {};
                     })      
