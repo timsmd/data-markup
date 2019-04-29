@@ -56,16 +56,18 @@ class Profile(db.Model):
 
     def check_labelled(self):
         votes_per_class_counts = db.session.query(Profileclass, func.count(Vote.id)).\
-        select_from(Vote).filter(Vote.value !=-1 and Vote.class_id == Profileclass.id).\
+        select_from(Vote).filter(Vote.value !=-1).filter(Vote.class_id == Profileclass.id).\
         join(Profile).filter(Profile.id == self.id).group_by(Profileclass.id).all()
         
+        if (len(votes_per_class_counts) <= 0):
+            return False
+
         for current_class, votes_count in votes_per_class_counts:
             if (votes_count < 3):
                 return False
 
         current_profile = Profile.query.filter_by(id=self.id).first()
         current_profile.labelled = True
-        db.session.add(current_profile)
         db.session.commit()
         return True
 
