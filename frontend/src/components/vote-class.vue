@@ -203,7 +203,6 @@
         left: 0;
         top: 0;
         -webkit-overflow-scrolling: touch !important;
-        overflow-y: auto !important;
         border: 2px solid #ddd;
         margin-bottom: 20px;
     }
