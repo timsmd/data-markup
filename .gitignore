@@ -16,5 +16,6 @@ frontend/yarn-error.log
 backend/app\.db
 
 backend/tools/*.txt
+backend/tools/*.csv
 
 data/
