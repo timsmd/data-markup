@@ -32,7 +32,7 @@
                     @click="modal.display = !modal.display; modal.class = item;">
                         ?
                     </button>
-                    <label class="btn btn-outline-primary col-md-6 btn-lg"
+                    <label class="btn btn-outline-primary col-md-6"
                      v-bind:class="{ active: votes[''+item.id]=='1'}">
                         <input type="radio"
                         v-bind:name="'group_'+item.id"
@@ -42,7 +42,7 @@
                         v-model="votes[''+item.id]">
                             {{ item.if_true }}
                     </label>
-                    <label class="btn btn-outline-info col-md-6 btn-lg"
+                    <label class="btn btn-outline-info col-md-6"
                      v-bind:class="{ active: votes[''+item.id]=='0'}">
                         <input type="radio" 
                         v-bind:name="'group_'+item.id"
@@ -52,7 +52,7 @@
                         value="0">
                             {{ item.if_false }}
                     </label>
-                    <label class="btn btn-outline-dark col-md-6 btn-lg"
+                    <label class="btn btn-outline-dark col-md-6"
                      v-bind:class="{ active: votes[''+item.id]=='-1'}">
                         <input type="radio"
                         v-bind:name="'group_'+item.id"
